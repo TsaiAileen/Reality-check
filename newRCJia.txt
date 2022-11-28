@@ -1,0 +1,65 @@
+SHOW databases;
+
+CREATE DATABASE realitycheck ;
+
+USE realitycheck ;
+
+DROP table Channel;
+DROP table Video;
+DROP table Comment;
+DROP table Review;
+DROP table Users;
+
+CREATE TABLE User (
+	id		integer,
+    name	varchar(10),
+    email	varchar(30),
+    
+	CONSTRAINT RC_UserPK PRIMARY KEY(id)
+);
+
+CREATE TABLE Channel (
+	 id				integer,
+     user_id		integer,
+	 category		VARCHAR(20),
+	 channelURL		VARCHAR(50),
+	 description	VARCHAR(50),     
+	 is_active		boolean,
+	 is_verified	boolean,
+	 up_votes     	integer,
+	 down_votes    	integer,
+
+	CONSTRAINT RC_ChannelPK PRIMARY KEY(id),
+    CONSTRAINT RC_UserFK FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Video (
+	 id		 	integer,
+     channel_id	integer,
+	 video_name	VARCHAR(30),
+	 videoURL	VARCHAR(30),
+	 up_votes   integer,
+     down_votes	integer,
+
+	CONSTRAINT RC_VideoPK PRIMARY KEY(id),
+    CONSTRAINT RC_ChannelFK FOREIGN KEY (channel_id) REFERENCES Channel(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Comment (
+	 id 			integer,
+     video_id		integer,
+	 description	VARCHAR(50),
+	 up_votes  		integer,
+	 down_votes     integer,     
+
+	CONSTRAINT RC_CommentPK PRIMARY KEY(id),
+    CONSTRAINT RC_VideoFK FOREIGN KEY (video_id) REFERENCES Video(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Review (
+	 review_id 	integer,
+	 addVotes	VARCHAR(30),
+	 report  	VARCHAR(30),
+
+	PRIMARY KEY(review_id)
+);
